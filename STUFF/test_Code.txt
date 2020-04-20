@@ -1,0 +1,282 @@
+
+PlaYer plY;
+Castle room;
+HANDLE hStdout = GetStdHandle(STD_OUTPUT_HANDLE);
+COORD pos;
+char disc[MAX_DISC];
+char knightFigure[MAX_TXT] = "knightFigure.txt";
+char plyFigure[MAX_TXT] = "playerFigure.txt";
+int dice;
+
+
+void playerStats(int x, int y)
+{
+	setCursorPos(x,y);
+	printf(" Name : %s", ply.name);
+	moveCursorPos(0,1);
+	printf(" Health : %d", ply.HP);
+	moveCursorPos(0,1);
+	printf(" Attack : %d", ply.attack);
+	moveCursorPos(0,1);
+	printf(" Defence : %d\n", 5); // ALTERAR
+	moveCursorPos(0,1);
+	printf(" Treasure : %d\n", ply.treasure);
+}
+
+void roomDiscription(int x, int y){
+
+	Desmoviption de[5];
+	for(int I = 0; I < 5; I++)
+		strcpy(de[I].desc," ");
+
+	shrinkDisc(disc, de); //shrinkDisc(rooms[plY.room].disc,de);
+
+	setCursorPos(x,y);
+	printf("%s", de[0].desc);
+	moveCursorPos(0,1);
+	printf("%s", de[1].desc);
+	moveCursorPos(0,1);
+	printf("%s", de[2].desc);
+	moveCursorPos(0,1);
+	printf("%s", de[3].desc);
+	moveCursorPos(0,1);
+	printf("%s", de[4].desc);
+
+}
+
+void printDices(int dice, int x, int y){
+
+	setCursorPos(x,y);
+	printf("%c", char(218));
+	repeated_print(char(196), 7);
+	printf("%c", char(191));
+	moveCursorPos(0,1);
+	dice_top(dice);
+	moveCursorPos(0,1);
+	dice_mid(dice);
+	moveCursorPos(0,1);
+	dice_bot(dice);
+	moveCursorPos(0,1);
+	printf("%c",char(192));
+	repeated_print(char(196), 7);
+	printf("%c", char(217));
+}
+
+void drawVerticalLines(int times, int x, int y){
+	
+	for (int i = 0; i < times; i++){
+		setCursorPos(x,y);
+		printf("%c", char(186));
+		y++;
+	}
+}
+
+void printFigure(char txt[], int x, int y){
+
+	FILE *f;
+	char line[MAX_BUFFER];
+
+	f = fopen( txt, "r" );
+
+	while( fgets(line, MAX_BUFFER, f) != NULL)
+	{
+		setCursorPos(x,y);
+		fputs( line, stdout );
+		y++;
+	}
+
+	fclose( f );
+}
+
+void drawHP(int x, int y, int Current, int MAX){
+
+	setCursorPos(x,y);
+
+	int Total = 15;
+	int pr = (Current * Total) / MAX;
+
+	for(int I = 0; I < Total; I++)
+		if(I < pr)
+			printf("%c",char(219));
+		else
+			printf(" ");
+}
+
+void drawStatLines(int x, int y){
+	
+	setCursorPos(x,y);
+	printf("%c", char(201));
+	repeated_print(char(205),16);
+	y++;
+	drawVerticalLines(3, x, y);
+	moveCursorPos(0,1);
+	printf("%c", char(204));
+	repeated_print(char(205),16);
+	moveCursorPos(0,1);
+	printf("%c", char(186));
+	moveCursorPos(0,1);
+	printf("%c", char(200));
+	repeated_print(char(205),16);
+
+	y--;
+	x += 17;
+	setCursorPos(x,y);
+	printf("%c", char(187));
+	y++;
+	drawVerticalLines(3, x, y);
+	moveCursorPos(0,1);
+	printf("%c", char(185));
+	moveCursorPos(0,1);
+	printf("%c", char(186));
+	moveCursorPos(0,1);
+	printf("%c", char(188));
+
+}
+
+void drawBattleStats(int x, int y){
+
+		setCursorPos(x, y);
+		printf(" Name : %s", ply.name);
+		y++;
+		setCursorPos(x, y);
+		printf(" Attack  : %d", ply.attack);
+		y++;
+		setCursorPos(x, y);
+		printf(" Defense %c %d",char(16),  5);
+		y += 2;
+		drawHP(x, y, ply.HP, 100);
+}
+
+void drawBattleStats(int x, int y, Knight &kni){
+		
+		setCursorPos(x, y);
+		printf(" Name : %s", kni.name);
+		y++;
+		setCursorPos(x, y);
+		printf(" Attack  : %d", kni.attack);
+		y++;
+		setCursorPos(x, y);
+		printf(" Defense %c %d",char(16),  kni.roll);
+		y += 2;
+		drawHP(x, y, kni.HP, kni.init_HP);
+}
+
+void printHUD(int x, int y){
+
+	setCursorPos(x, y);
+	repeated_print(char(205),18);
+	printf("%c",char(203));
+	repeated_print(char(205),61);
+
+	drawVerticalLines(5, x + 18, y + 1);
+
+	setCursorPos(x, y + 6);
+	repeated_print(char(205),18);
+	printf("%c",char(202));
+	repeated_print(char(205),61);
+
+	playerStats(x, y + 1);
+
+	roomDiscription(x + 20, y + 1);
+}
+
+void printBattleHUD(int x, int y){
+
+	setCursorPos(x + 20,y);
+	printf("%c", char(203));
+	moveCursorPos(0,1);
+	printf("%c", char(179));
+	moveCursorPos(0,1);
+	printf("%c", char(192));
+	moveCursorPos(1,0);
+	repeated_print(char(196), 39);
+	printf("%c", char(217));
+	setCursorPos(x + 60,y);
+	printf("%c", char(203));
+	moveCursorPos(0,1);
+	printf("%c", char(179));
+	moveCursorPos(0,1);
+
+
+	dice = 6;
+	printDices(dice, x + 29, y + 17);
+	printDices(dice, x + 38, y + 17);
+
+
+	printFigure(plyFigure, x + 1, y + 4);
+	printFigure(knightFigure, x + 50, y + 4);
+
+	drawBattleStats(x + 2, y + 18);
+	drawStatLines(x + 1, y + 17);
+	drawStatLines(x + 61, y + 17);
+
+	printFigure("vs.txt", x + 28, y + 8);
+}
+
+________________________________________________________________________________________________
+
+void knightSetup(){
+
+	FILE *f;
+	char line[MAX_BUFFER];
+	char word[MAX_DISC];
+	char knight[1000] = "knight.tXt";
+
+
+	f = fopen( knight, "r" );
+
+	while( fgets(line, MAX_BUFFER, f) != NULL)
+	{
+		int c = 0;
+		int i = 0;
+		int s = 0;
+		int r = 0;
+		strcpy(word, "");
+
+		while(line[i] != '\0'){
+
+			if(line[i] == ';'){
+
+				word[s] = '\0';
+
+				switch (c){
+
+				case 0:
+					r = atoi(word);
+				case 1:
+					strcpY(knights[r].name, word);
+					break;
+				case 2:
+					knights[r].room = atoi(word);
+					break;
+				case 3:
+					knights[r].HP = atoi(word);
+					break;
+				case 4:
+					knights[r].roll = atoi(word);
+					break;
+				case 5:
+					knights[r].attack = atoi(word);
+					break;
+				case 6:
+					knights[r].frozen = atoi(word);
+					break;
+				default:
+					break;
+				}
+
+				strcpY(word, "");
+				s = 0;
+				c++;
+			}
+			else{
+				word[s] = line[i];
+				s++;
+			}
+
+			i++;
+		}
+	}
+
+	fclose( f );
+}

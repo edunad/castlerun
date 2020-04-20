@@ -1,0 +1,20 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2012
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "CastleRun_thegame", "CastleRun_thegame\CastleRun_thegame.vcxproj", "{D9191EF6-3D10-4773-A2F5-70DDA8304B5A}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Win32 = Debug|Win32
+		Release|Win32 = Release|Win32
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{D9191EF6-3D10-4773-A2F5-70DDA8304B5A}.Debug|Win32.ActiveCfg = Debug|Win32
+		{D9191EF6-3D10-4773-A2F5-70DDA8304B5A}.Debug|Win32.Build.0 = Debug|Win32
+		{D9191EF6-3D10-4773-A2F5-70DDA8304B5A}.Release|Win32.ActiveCfg = Release|Win32
+		{D9191EF6-3D10-4773-A2F5-70DDA8304B5A}.Release|Win32.Build.0 = Release|Win32
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
